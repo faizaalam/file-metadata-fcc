@@ -28,15 +28,24 @@ storage: multer.diskStorage({
           }
         const image = file.mimetype.startsWith('image/');
         if(image){
-          console.log('photo uploaded');
+          console.log('photo uploaded', file.size);
           next(null, true);
         }else{
           console.log("file not supported");
           
           //TODO:  A better message response to user on failure.
           return next();
-        }
-    }
+        }     
+  
+    },
+      fileSize: function(req,file,next){
+          if(!file){
+            next();
+          }
+        const size = file.size;
+        console.log(size);
+        next(null, size);
+      }
   };
 
 app.use(bodyParser.urlencoded({extended: false}));
