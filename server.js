@@ -17,7 +17,7 @@ storage: multer.diskStorage({
     filename: function(req, file, next){
         console.log(file);
         const ext = file.mimetype.split('/')[1];
-        next(null, file.fieldname + '-' + Date.now() + '.'+ext);
+        next(null, file.fieldname + '-' + Date.now() + file.size + '.'+ext);
       }
     }),   
     
@@ -28,7 +28,7 @@ storage: multer.diskStorage({
           }
         const image = file.mimetype.startsWith('image/');
         if(image){
-          console.log('photo uploaded', file.size);
+          console.log('photo uploaded');
           next(null, true);
         }else{
           console.log("file not supported");
@@ -44,12 +44,11 @@ storage: multer.diskStorage({
           }
         const size = file.size;
         console.log(size);
-        next(null, size);
+        next(null, file);
       }
   };
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
@@ -57,7 +56,7 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
-   res.send('Complete!');
+   res.send(req.file.size);
 });
 
 // listen for requests :)
