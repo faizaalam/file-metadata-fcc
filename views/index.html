@@ -32,10 +32,10 @@
       
       <p>Upload a file to get it's meta-data:</p>
       
-      <form>
-       <input id="upload-input" type="file" name="uploads[]" multiple="multiple">
-        <button type="submit" id="submit-dream">Submit Dream</button>
-      </form>
+ <form action="/upload" enctype="multipart/form-data" method="POST"> 
+   <input type="file" name="photo" />
+   <input type="submit" value="Upload Photo"/>
+</form>
 
     </main>
 
